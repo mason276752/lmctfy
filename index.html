@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ChatGPT LMGTFY</title>
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="Let me ChatGPT that for you">
+    <meta name="description" content="Watch how to ask ChatGPT your question...">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Let me ChatGPT that for you">
+    <meta property="og:title" content="Let me ChatGPT that for you">
+    <meta property="og:description" content="Watch how to ask ChatGPT your question...">
+    <meta property="og:image" content="https://i.imgur.com/oX01I5X.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Let me ChatGPT that for you preview">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Let me ChatGPT that for you">
+    <meta name="twitter:description" content="Watch how to ask ChatGPT your question...">
+    <meta name="twitter:image" content="https://i.imgur.com/oX01I5X.png">
+    <meta name="twitter:image:alt" content="Let me ChatGPT that for you preview">
+
+    <!-- Threads (uses same meta tags as Facebook) -->
+
+    <!-- JSON-LD structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Let me ChatGPT that for you",
+      "description": "Watch how to ask ChatGPT your question...",
+      "image": "https://i.imgur.com/Zs3dgRg.png",
+      "url": "https://chatgpt.com",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "browserRequirements": "Requires JavaScript",
+      "creator": {
+        "@type": "Organization",
+        "name": "LMGTFY AI"
+      }
+    }
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+
+      .container {
+        text-align: center;
+        width: 100%;
+        max-width: 600px;
+      }
+
+      h1 {
+        color: #10a37f;
+        margin-bottom: 10px;
+        font-size: clamp(24px, 5vw, 32px);
+        padding: 0 10px;
+      }
+
+      .instructions {
+        color: #666;
+        margin-bottom: 30px;
+        font-size: clamp(16px, 4vw, 18px);
+        padding: 0 10px;
+      }
+
+      .address-bar-container {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 0 10px;
+        box-sizing: border-box;
+      }
+
+      #address-bar {
+        width: 100%;
+        padding: 10px 40px;
+        font-size: clamp(14px, 4vw, 16px);
+        border: 1px solid #ddd;
+        border-radius: 25px;
+        outline: none;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        background-color: white;
+        box-sizing: border-box;
+      }
+
+      #address-bar:focus {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      }
+
+      .lock-icon {
+        position: absolute;
+        left: 22px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #5f6368;
+        font-size: 16px;
+        z-index: 1;
+      }
+
+      button {
+        padding: clamp(10px, 3vw, 12px) clamp(20px, 5vw, 24px);
+        font-size: clamp(14px, 4vw, 16px);
+        background-color: #10a37f;
+        color: white;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: background-color 0.2s;
+        width: auto;
+        max-width: 100%;
+        white-space: nowrap;
+      }
+
+      button:hover {
+        background-color: #0e906f;
+      }
+
+      .cursor {
+        display: none;
+        position: fixed;
+        width: 20px;
+        height: 20px;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18M12 3v18"/></svg>');
+        pointer-events: none;
+        z-index: 1000;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .cursor.clicking {
+        transform: scale(0.8);
+        opacity: 0.8;
+      }
+
+      #copy-message {
+        font-size: clamp(14px, 3.5vw, 16px);
+        padding: 0 10px;
+      }
+
+      .enter-key {
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        top: calc(50% + 10px);
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        border-radius: 8px;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        font-weight: 500;
+        z-index: 1000;
+        font-size: clamp(16px, 4vw, 18px);
+        padding: clamp(10px, 3vw, 12px) clamp(20px, 5vw, 24px);
+        white-space: nowrap;
+      }
+
+      .enter-key.show {
+        opacity: 1;
+      }
+
+      .enter-key.pressed {
+        transform: translate(-50%, 3px);
+        opacity: 0;
+        transition: all 0.2s ease-in-out;
+      }
+
+      @media (max-width: 480px) {
+        body {
+          padding: 10px;
+        }
+
+        .address-bar-container {
+          margin: 15px auto;
+        }
+
+        .lock-icon {
+          left: 20px;
+          font-size: 14px;
+        }
+
+        button {
+          margin-top: 15px;
+          padding: 10px 20px;
+        }
+
+        .enter-key {
+          max-width: 90%;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Let me ChatGPT that for you</h1>
+      <p class="instructions">Watch how to ask ChatGPT your question...</p>
+      <div class="address-bar-container">
+        <span class="lock-icon">🔒</span>
+        <input type="text" id="address-bar" spellcheck="false" />
+      </div>
+      <button onclick="copyUrlToClipboard()">Let me ChatGPT that for you</button>
+      <p id="copy-message" style="color: #10a37f; margin-top: 10px; opacity: 0; transition: opacity 0.3s;">URL copied to clipboard!</p>
+    </div>
+    <div class="cursor"></div>
+    <div class="enter-key">Press Enter ↵</div>
+
+    <script>
+      function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+
+      async function moveCursorTo(element, cursor) {
+        const rect = element.getBoundingClientRect();
+        const targetX = rect.left + rect.width / 2;
+        const targetY = rect.top + rect.height / 2;
+        
+        cursor.style.left = `${targetX}px`;
+        cursor.style.top = `${targetY}px`;
+        
+        await sleep(500);
+      }
+
+      async function simulateClick(cursor) {
+        cursor.classList.add('clicking');
+        await sleep(200);
+        cursor.classList.remove('clicking');
+        await sleep(200);
+      }
+
+      async function showEnterKeyPress() {
+        const enterKey = document.querySelector('.enter-key');
+        
+        // Show the enter key with fade in
+        enterKey.classList.add('show');
+        await sleep(500);
+        
+        // Simulate press animation
+        enterKey.classList.add('pressed');
+        await sleep(300);
+        
+        // Hide the enter key
+        enterKey.classList.remove('show', 'pressed');
+      }
+
+      async function startAnimation(initialQuery = '') {
+        const cursor = document.querySelector('.cursor');
+        const input = document.getElementById('address-bar');
+        const button = document.querySelector('button');
+        const query = initialQuery || input.value;
+        
+        if (!query) return;
+
+        // Disable input and button during animation
+        input.disabled = true;
+        button.disabled = true;
+
+        // Show cursor at initial position (top left corner)
+        cursor.style.display = 'block';
+        cursor.style.left = '20px';
+        cursor.style.top = '20px';
+        await sleep(800); // Give more time to notice the cursor
+
+        // Move cursor to input and click
+        await moveCursorTo(input, cursor);
+        await simulateClick(cursor);
+
+        // Clear input (not needed if it's already empty)
+        input.value = '';
+        
+        // Type the URL
+        const baseUrl = 'https://chatgpt.com/?hints=search&q=';
+        await sleep(500);
+        
+        for (let char of baseUrl) {
+          input.value += char;
+          await sleep(50);
+        }
+
+        // Type the query
+        for (let char of query) {
+          input.value += char;
+          await sleep(100);
+        }
+
+        // Show enter key press animation
+        await sleep(500);
+        await showEnterKeyPress();
+        await sleep(200);
+
+        // Redirect to ChatGPT
+        window.location.href = baseUrl + encodeURIComponent(query);
+      }
+
+      async function copyUrlToClipboard() {
+        const input = document.getElementById('address-bar');
+        const query = input.value;
+        
+        if (!query) return;
+
+        // Create the full URL with the query parameter
+        const currentUrl = window.location.origin + window.location.pathname;
+        const fullUrl = `${currentUrl}?q=${encodeURIComponent(query)}`;
+        
+        // Copy to clipboard
+        try {
+          await navigator.clipboard.writeText(fullUrl);
+          
+          // Show success message
+          const message = document.getElementById('copy-message');
+          message.style.opacity = '1';
+          
+          // Hide message after 2 seconds
+          setTimeout(() => {
+            message.style.opacity = '0';
+          }, 2000);
+        } catch (err) {
+          console.error('Failed to copy URL: ', err);
+        }
+      }
+
+      // Set initial placeholder and check URL parameters
+      window.onload = function() {
+        const input = document.getElementById('address-bar');
+        const currentUrl = window.location.origin + window.location.pathname;
+        
+        // Set initial placeholder to current URL
+        input.placeholder = currentUrl;
+
+        input.addEventListener('focus', function() {
+          this.placeholder = 'Ask ChatGPT...';
+        });
+
+        input.addEventListener('blur', function() {
+          if (!this.value) {
+            this.placeholder = currentUrl;
+          }
+        });
+
+        // Keep the cursor and latest text visible
+        input.addEventListener('input', function() {
+          // Use setTimeout to ensure this runs after the input value has been updated
+          setTimeout(() => {
+            this.scrollLeft = this.scrollWidth;
+          }, 0);
+        });
+
+        // Also handle scrolling when typing during the animation
+        const originalSetValue = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+        const originalGetValue = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').get;
+        
+        Object.defineProperty(input, 'value', {
+          get: function() {
+            return originalGetValue.call(this);
+          },
+          set: function(value) {
+            originalSetValue.call(this, value);
+            // Only scroll if the input has a value
+            if (value) {
+              setTimeout(() => {
+                this.scrollLeft = this.scrollWidth;
+              }, 0);
+            }
+          }
+        });
+
+        // Check for URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const queryParam = urlParams.get('q');
+        if (queryParam) {
+          const decodedQuery = decodeURIComponent(queryParam);
+          // Start animation directly with the query parameter
+          setTimeout(() => startAnimation(decodedQuery), 500);
+        }
+      }
+    </script>
+  </body>
+</html>
